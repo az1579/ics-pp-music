@@ -27,6 +27,7 @@ menu = "\n++++ Choose one of the following commands\n \
         q: to leave the chat system\n\n"
 music_menu = "\n---- You and your chat buddies are currently in Music Mode.\n \
         song: write a short song and send it to your friends! \n \
+                song example: song bpm120 C4 8 C3 A4 8 A4 8\n \
         done: all of you leave Music Mode\n\n"
 S_OFFLINE   = 0
 S_CONNECTED = 1
