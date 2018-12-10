@@ -132,14 +132,23 @@ class Server:
 #==============================================================================
 #             retrieve a sonnet
 #==============================================================================
-            elif code == M_POEM:
-                poem_indx = int(msg[1:])
-                from_name = self.logged_sock2name[from_sock]
-                print(from_name + ' asks for ', poem_indx)
+#            elif code == M_POEM:
+#                poem_indx = int(msg[1:])
+#                from_name = self.logged_sock2name[from_sock]
+#                print(from_name + ' asks for ', poem_indx)
 #                poem = self.sonnet.get_sect(poem_indx)
-                poem = self.sonnet.get_poem(poem_indx) #poem is a list of sring
-                print('here:\n', poem)
-                mysend(from_sock, M_POEM + '\n'.join(poem))
+#                poem = self.sonnet.get_poem(poem_indx) #poem is a list of sring
+#                print('here:\n', poem)
+#                mysend(from_sock, M_POEM + '\n'.join(poem))
+#==============================================================================
+#             music mode
+#==============================================================================
+            elif code == M_MUSIC:
+                from_name = self.logged_sock2name[from_sock]
+                the_guys = self.group.list_me(from_name)
+                for g in the_guys[1:]:
+                    to_sock = self.logged_name2sock[g]
+                    mysend(to_sock, M_MUSIC + from_name)
 #==============================================================================
 #                 time
 #==============================================================================

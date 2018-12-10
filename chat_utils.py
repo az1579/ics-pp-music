@@ -9,7 +9,9 @@ M_LOGOUT    = '4'
 M_DISCONNECT= '5'
 M_SEARCH    = '6'
 M_LIST      = '7'
-M_POEM      = '8'
+#M_POEM      = '8'
+M_MUSIC     = '8'
+M_MUSIC_OUT = 'X'
 M_TIME      = '9'
 
 CHAT_IP = ''#socket.gethostname()
@@ -21,13 +23,16 @@ menu = "\n++++ Choose one of the following commands\n \
         who: to find out who else are there\n \
         c _peer_: to connect to the _peer_ and chat\n \
         ? _term_: to search your chat logs where _term_ appears\n \
-        p _#_: to get number <#> sonnet\n \
+        #p _#_: to get number <#> sonnet\n \
         q: to leave the chat system\n\n"
-
+music_menu = "\n---- You and your chat buddies are currently in Music Mode.\n \
+        song: write a short song and send it to your friends! \n \
+        done: all of you leave Music Mode\n\n"
 S_OFFLINE   = 0
 S_CONNECTED = 1
 S_LOGGEDIN  = 2
 S_CHATTING  = 3
+S_MUSIC = 4
 
 SIZE_SPEC = 5
 
