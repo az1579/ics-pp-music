@@ -157,6 +157,16 @@ class ClientSM:
 # When in Music Mode
 #==============================================================================
         elif self.state == S_MUSIC:
+            if len(peer_msg) > 0:
+                if peer_code == M_MUSIC: #No matter what, peer_msg is just peer's name
+                    self.out_msg += peer_msg
+                elif peer_code == M_MUSIC_OUT:  
+                    self.out_msg += peer_msg + ' has finished playing music\n'
+                elif peer_code == M_EXCHANGE:   # you can still chat while in music mode
+                    self.out_msg += peer_msg
+                else:                           # this shouldn't happen
+                    self.out_msg += 'Invalid peer code\n'
+                    
             if len(my_msg) > 0:
                 if my_msg[:4] == 'done':
                     mysend(self.s, M_MUSIC_OUT + self.me)
@@ -165,14 +175,18 @@ class ClientSM:
                     self.out_msg += 'Welcome back to Chat Mode.'
                     self.out_msg += 'Chat away!\n\n'
                     self.out_msg += '------------------------------------\n'
-                        
+                    
+                elif my_msg[:4] == 'song':
+                    notes = my_msg[4:].strip()
+                    music.song(notes, self.me) # saves a wav file with your name in the title
+                    message = M_MUSIC + notes
+                    mysend(self.s, message)
+                    self.out_msg += 'You have sent a song\n'
+                    
                 else: # just sending a normal chat message
                     mysend(self.s, M_EXCHANGE + "[" + self.me + "] " + my_msg)
         
-        
-        
-        
-        
+ 
 #==============================================================================
 # invalid state                       
 #==============================================================================
