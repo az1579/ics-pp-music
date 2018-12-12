@@ -5,6 +5,8 @@ Created on Sun Apr  5 00:00:32 2015
 @author: zhengzhang
 """
 from chat_utils import *
+import music
+import ast #convert list into string and vice versa
 
 class ClientSM:
     def __init__(self, s):
@@ -92,14 +94,14 @@ class ClientSM:
                     else:
                         self.out_msg += '\'' + term + '\'' + ' not found\n\n'
                         
-                elif my_msg[0] == 'p':
-                    poem_idx = my_msg[1:].strip()
-                    mysend(self.s, M_POEM + poem_idx)
-                    poem = myrecv(self.s)[1:].strip()
-                    if (len(poem) > 0):
-                        self.out_msg += poem + '\n\n'
-                    else:
-                        self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n'
+#                elif my_msg[0] == 'p':
+#                   poem_idx = my_msg[1:].strip()
+#                    mysend(self.s, M_POEM + poem_idx)
+#                    poem = myrecv(self.s)[1:].strip()
+#                    if (len(poem) > 0):
+#                        self.out_msg += poem + '\n\n'
+#                    else:
+#                        self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n'
                         
                 else:
                     self.out_msg += menu
@@ -119,15 +121,25 @@ class ClientSM:
 #==============================================================================
         elif self.state == S_CHATTING:
             if len(my_msg) > 0:     # My stuff, going out
-                mysend(self.s, M_EXCHANGE + "[" + self.me + "] " + my_msg)
-                if my_msg == 'bye':
-                    self.disconnect()
-                    self.state = S_LOGGEDIN
-                    self.peer = ''
+                if my_msg == '!music':
+                    mysend(self.s, M_MUSIC + self.me)
+                    self.state = S_MUSIC
+                    self.out_msg += music_menu
+                else:
+                    mysend(self.s, M_EXCHANGE + "[" + self.me + "] " + my_msg)
+                    if my_msg == 'bye':
+                        self.disconnect()
+                        self.state = S_LOGGEDIN
+                        self.peer = ''
+                    
             if len(peer_msg) > 0:   # Peer's stuff, coming in
                 # New peer joins
                 if peer_code == M_CONNECT:
                     self.out_msg += "(" + peer_msg + " joined)\n"
+                elif peer_code == M_MUSIC:
+                    self.out_msg += peer_msg + " has invited you to play music!\n"
+                    self.state = S_MUSIC
+                    self.out_msg += music_menu
                 else:
                     self.out_msg += peer_msg
 
