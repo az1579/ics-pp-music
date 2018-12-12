@@ -150,6 +150,29 @@ class ClientSM:
             # Display the menu again
             if self.state == S_LOGGEDIN:
                 self.out_msg += menu
+                
+                
+                
+#==============================================================================
+# When in Music Mode
+#==============================================================================
+        elif self.state == S_MUSIC:
+            if len(my_msg) > 0:
+                if my_msg[:4] == 'done':
+                    mysend(self.s, M_MUSIC_OUT + self.me)
+                    self.state = S_CHATTING
+                    self.out_msg += 'You have exited Music Mode\n'
+                    self.out_msg += 'Welcome back to Chat Mode.'
+                    self.out_msg += 'Chat away!\n\n'
+                    self.out_msg += '------------------------------------\n'
+                        
+                else: # just sending a normal chat message
+                    mysend(self.s, M_EXCHANGE + "[" + self.me + "] " + my_msg)
+        
+        
+        
+        
+        
 #==============================================================================
 # invalid state                       
 #==============================================================================
